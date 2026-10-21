@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Tech Recife</title>
+<meta name="description" content="My Tech: iPhones novos e seminovos, assistência técnica, parcelamento em até 24x e entrega em Recife - PE.">
+<meta name="theme-color" content="#FF6400">
+<meta property="og:type" content="website">
+<meta property="og:title" content="My Tech · Seu próximo iPhone">
+<meta property="og:description" content="iPhones novos e seminovos, assistência técnica, parcele em até 24x e levamos até você. Recife - PE.">
+<meta property="og:image" content="https://juliocesargfx-sys.github.io/mytech/assets/og.jpg">
+<meta property="og:url" content="https://juliocesargfx-sys.github.io/mytech/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap">
+<style>
+/* Layout: faixas de cor inteiras (laranja / preto / off-white) como no manual, tipografia grande em Arial bold,
+   o corte diagonal do "y" em botões e imagens. Movimento: abertura com linha laranja, palavras saindo de máscaras,
+   faixas de texto, mockup em 3D que se endireita, percurso horizontal fixado, contador 1→24, texto em anel. */
+:root {
+  --orange: #FF6400;
+  --ink: #101010;
+  --paper: #F2F1EE;
+  --white: #FFFFFF;
+  --mute: #66625D;
+  --mute-dark: #A8A49F;
+  --line: rgba(16, 16, 16, .14);
+  --line-dark: rgba(255, 255, 255, .16);
+  --font: "Arimo", Arial, Helvetica, sans-serif;
+  --wrap: 1200px;
+  --head: 68px;
+  --cut: 0.5; /* inclinação do corte do "y": 1 de largura para 2 de altura */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.035em; line-height: 0.98; text-wrap: balance; }
+p { margin: 0; }
+[hidden] { display: none !important; }
+
+.wrap {
+  max-width: calc(var(--wrap) + 2 * 48px);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) {
+  .wrap { padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); }
+}
+.band { padding-block: clamp(72px, 11vw, 140px); }
+.band--orange { background: var(--orange); color: var(--ink); }
+.band--ink { background: var(--ink); color: var(--white); }
+.band--white { background: var(--white); color: var(--ink); }
+.band--paper { background: var(--paper); color: var(--ink); }
+section[id] { scroll-margin-top: var(--head); }
+
+.eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.logo { display: block; height: 1em; width: auto; aspect-ratio: 504 / 222.8; flex: none; }
+
+/* Palavras divididas para animar (feito via JS; sem JS o texto fica normal) */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.wi { display: inline-block; will-change: transform; }
+
+/* Botões com o corte diagonal do "y" */
+.btn {
+  --h: 56px;
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: var(--h);
+  padding: 0 calc(var(--h) * var(--cut) + 22px) 0 24px;
+  font: 700 1rem/1 var(--font);
+  text-decoration: none; border: 0; cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--h) * var(--cut)) 100%, 0 100%);
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: color .25s var(--ease);
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--fill-hover);
+  transform: translateX(-101%); transition: transform .35s var(--ease);
+}
+.btn:hover::before { transform: translateX(0); }
+.btn:hover { color: var(--text-hover); }
+.btn:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 5px var(--white); }
+.btn--ink { background: var(--ink); color: var(--white); --fill-hover: var(--white); --text-hover: var(--ink); }
+.btn--orange { background: var(--orange); color: var(--ink); --fill-hover: var(--white); --text-hover: var(--ink); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.link-quiet { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.link-quiet:focus-visible, .nav a:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+
+/* Abertura */
+.intro {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--orange); color: var(--white);
+  display: grid; place-items: center;
+  pointer-events: none;
+}
+.intro__line { position: absolute; left: 0; top: 50%; height: 3px; width: 100%; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+.intro__logo { width: min(46vw, 360px); position: relative; clip-path: inset(100% 0 0 0); }
+.intro__logo svg { width: 100%; height: auto; display: block; }
+html:not(.js) .intro, html.reduced .intro { display: none; }
+
+/* Barra de progresso de leitura */
+.progress { position: absolute; left: 0; bottom: -3px; height: 3px; width: 100%; background: var(--orange); transform-origin: left; transform: scaleX(0); }
+
+/* Cabeçalho */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--ink); color: var(--white); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: var(--head); }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.brand .logo { height: 26px; color: var(--white); }
+.nav { display: flex; gap: 28px; font-size: 0.95rem; }
+.nav a { text-decoration: none; opacity: .82; position: relative; }
+.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--orange); transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease); }
+.nav a:hover { opacity: 1; }
+.nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+.top .btn { --h: 44px; font-size: 0.92rem; padding-left: 18px; }
+@media (max-width: 920px) { .nav { display: none; } }
+@media (max-width: 480px) { .top .btn span.long { display: none; } }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; padding-block: clamp(48px, 7vw, 96px) clamp(64px, 9vw, 128px); }
+.hero__crop { position: absolute; right: -14%; bottom: -22%; width: min(92vw, 1100px); color: var(--white); opacity: .16; pointer-events: none; }
+.hero__crop svg { width: 100%; height: auto; display: block; }
+.hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+.hero__copy { display: grid; gap: 28px; min-width: 0; }
+.hero h1 { font-size: clamp(3.4rem, 9.2vw, 8.4rem); letter-spacing: -0.05em; line-height: 0.9; }
+.hero__lead { font-size: clamp(1.1rem, 1.6vw, 1.35rem); max-width: 34ch; line-height: 1.45; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.hero__place { display: flex; align-items: center; gap: 10px; }
+.hero__place::before { content: ""; width: 10px; height: 10px; background: var(--ink); }
+.hero__media { position: relative; min-width: 0; perspective: 1400px; margin: 0; }
+.hero__tilt { position: relative; transform-style: preserve-3d; will-change: transform; }
+.hero__media img {
+  width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: 49% 50%;
+  clip-path: polygon(0 0, 100% 0, 100% 78%, calc(100% - 22% * var(--cut) * 2) 100%, 0 100%);
+  background: var(--ink);
+}
+.hero__tag { position: absolute; left: 0; bottom: 0; background: var(--ink); color: var(--white); padding: 12px 16px; font-size: 0.82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
+  .hero__media img { aspect-ratio: 3 / 2; object-position: 50% 50%; }
+}
+
+/* Faixas de texto correndo */
+.marquee { background: var(--ink); color: var(--white); padding-block: clamp(18px, 3vw, 34px); overflow: hidden; display: grid; gap: 4px; }
+.marquee__row { display: flex; width: max-content; will-change: transform; }
+.marquee__row span { font-size: clamp(2.6rem, 7vw, 6.2rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.02; white-space: nowrap; padding-right: 0.35em; display: inline-flex; align-items: center; gap: 0.35em; }
+.marquee__row span::after { content: ""; width: 0.32em; height: 0.32em; background: var(--orange); flex: none; }
+.marquee__row--ghost span { color: transparent; -webkit-text-stroke: 1.5px var(--orange); }
+.marquee__row--ghost span::after { background: var(--white); }
+
+/* Percurso horizontal */
+.hscroll { background: var(--paper); }
+.hscroll__intro { padding-block: clamp(72px, 10vw, 128px) 32px; display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.hscroll__intro h2 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); max-width: 12ch; }
+.hscroll__hint { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--mute); }
+.hscroll__hint svg { width: 22px; height: 22px; }
+.hscroll__pin { overflow: hidden; }
+.hscroll__track {
+  display: flex; gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-block: 0 clamp(72px, 10vw, 128px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) { .hscroll__track { padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); } }
+.is-pinned .hscroll__track { overflow: visible; scroll-snap-type: none; width: max-content; padding-block: 0; height: calc(100svh - var(--head)); align-items: center; }
+.panel {
+  flex: none; width: min(78vw, 980px); height: min(72svh, 640px);
+  padding: clamp(24px, 3.4vw, 48px);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: end;
+  position: relative; overflow: hidden; scroll-snap-align: start;
+}
+.panel h3 { font-size: clamp(2.4rem, 5.6vw, 5rem); letter-spacing: -0.045em; }
+.panel p { font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 32ch; }
+.panel__copy { display: grid; gap: 18px; align-content: end; min-width: 0; position: relative; z-index: 1; }
+.panel__label { position: absolute; top: clamp(24px, 3.4vw, 48px); left: clamp(24px, 3.4vw, 48px); }
+.panel__media { align-self: stretch; min-width: 0; overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% 100%, 22% 100%, 0 56%); }
+.panel__media img { width: 120%; max-width: none; height: 100%; object-fit: cover; will-change: transform; }
+.panel--ink { background: var(--ink); color: var(--white); }
+.panel--ink p { color: var(--mute-dark); }
+.panel--orange { background: var(--orange); color: var(--ink); }
+.panel--white { background: var(--white); color: var(--ink); }
+.panel--white p { color: var(--mute); }
+.panel .panel__big { max-width: none; font-size: clamp(7rem, 20vw, 18rem); font-weight: 700; letter-spacing: -0.07em; line-height: .78; align-self: center; justify-self: end; color: var(--orange); }
+.panel__big small { font-size: .42em; }
+.panel__list { list-style: none; margin: 0; padding: 0; align-self: center; display: grid; }
+.panel__list li { font-size: clamp(1.3rem, 2.4vw, 2rem); font-weight: 700; letter-spacing: -0.03em; padding-block: 12px; border-bottom: 1.5px solid var(--ink); }
+.panel__logo { align-self: center; justify-self: center; width: 100%; color: var(--white); }
+.panel__logo svg { width: 100%; height: auto; display: block; }
+.hscroll__bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--line); display: none; }
+.hscroll__bar i { display: block; height: 100%; width: 100%; background: var(--orange); transform-origin: left; transform: scaleX(0); }
+.is-pinned .hscroll__bar { display: block; }
+.is-pinned .hscroll__pin { position: relative; }
+@media (max-width: 760px) {
+  .panel { width: 86vw; height: auto; min-height: 66svh; grid-template-columns: minmax(0, 1fr); align-content: end; padding-top: 72px; }
+  .is-pinned .panel { height: min(78svh, 640px); min-height: 0; }
+  .panel__media { height: 200px; }
+  .panel__big { justify-self: start; }
+}
+
+/* Cabeçalho de seção */
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
+.head h2 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); }
+.head p { max-width: 42ch; font-size: 1.1rem; }
+.head .eyebrow { grid-column: 1 / -1; }
+@media (max-width: 760px) { .head { grid-template-columns: minmax(0, 1fr); } }
+.band--ink .head p { color: var(--mute-dark); }
+.band--white .head p, .band--paper .head p { color: var(--mute); }
+
+/* iPhones: três quadros que se abrem em leque */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tile { aspect-ratio: 1 / 1; padding: clamp(22px, 2.6vw, 34px); display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; text-decoration: none; will-change: transform; }
+.tile > div { display: grid; gap: 12px; }
+.tile h3 { font-size: clamp(2rem, 3.6vw, 3rem); }
+.tile p { font-size: 1rem; max-width: 30ch; }
+.tile--ink { background: var(--ink); color: var(--white); }
+.tile--ink p { color: var(--mute-dark); }
+.tile--orange { background: var(--orange); color: var(--ink); }
+.tile--line { background: var(--paper); color: var(--ink); transition: background-color .2s ease; }
+.tile--line:hover { background: #E8E6E1; }
+.tile--line:hover .arrow { transform: translateX(6px); }
+.tile--line:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.tile .logo { height: 34px; align-self: flex-start; color: var(--white); }
+.tile__foot { display: flex; justify-content: space-between; align-items: end; gap: 12px; font-weight: 700; }
+.arrow { width: 44px; height: 44px; background: var(--orange); color: var(--ink); display: grid; place-items: center; clip-path: polygon(0 0, 100% 0, calc(100% - 11px) 100%, 0 100%); transition: transform .3s var(--ease); }
+.arrow svg { width: 20px; height: 20px; margin-right: 6px; }
+@media (max-width: 900px) { .tiles { grid-template-columns: minmax(0, 1fr); } .tile { aspect-ratio: auto; min-height: 280px; } }
+
+/* Assistência */
+.reading { font-size: clamp(1.9rem, 4.6vw, 3.9rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.08; max-width: 22ch; margin-bottom: clamp(48px, 7vw, 88px); }
+.services { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; border-top: 1px solid var(--line-dark); }
+.services li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding-block: 22px; border-bottom: 1px solid var(--line-dark); }
+.services strong { font-size: clamp(1.25rem, 2.2vw, 1.6rem); letter-spacing: -0.02em; transition: color .2s ease, transform .3s var(--ease); }
+.services li:hover strong { color: var(--orange); transform: translateX(8px); }
+.services span { color: var(--mute-dark); font-size: 0.95rem; text-align: right; }
+.after-list { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; }
+.after-list p { color: var(--mute-dark); }
+@media (max-width: 760px) {
+  .services { grid-template-columns: minmax(0, 1fr); }
+  .services li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .services span { text-align: left; }
+}
+
+/* 24x */
+.installments { overflow: hidden; position: relative; }
+.installments__stage { min-height: calc(100svh - var(--head)); display: grid; align-items: center; padding-block: clamp(56px, 8vw, 96px); background: var(--orange); }
+.installments__grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px clamp(32px, 6vw, 96px); align-items: center; }
+.counter { position: relative; display: grid; place-items: center; width: min(42vw, 560px); aspect-ratio: 1; container-type: inline-size; }
+.big24 { font-size: 34cqi; font-weight: 700; letter-spacing: -0.07em; line-height: 0.78; white-space: nowrap; font-variant-numeric: tabular-nums; position: relative; z-index: 1; }
+.big24 small { font-size: 0.42em; letter-spacing: -0.04em; margin-left: 0.04em; }
+.ring { position: absolute; inset: 0; pointer-events: none; }
+.ring svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.ring text { font: 700 13.5px var(--font); letter-spacing: 3.2px; fill: var(--ink); text-transform: uppercase; }
+.installments__copy { display: grid; gap: 22px; max-width: 36ch; }
+.installments__copy h2 { font-size: clamp(2rem, 4.4vw, 3.6rem); }
+.installments__copy p { font-size: 1.1rem; }
+.note { font-size: 0.85rem; opacity: .78; }
+@media (max-width: 760px) { .installments__grid { grid-template-columns: minmax(0, 1fr); justify-items: start; } .counter { justify-self: center; width: min(84vw, 460px); } }
+
+/* Entrega */
+.delivery__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 88px); align-items: center; }
+.delivery__media { overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% 100%, 22% 100%, 0 56%); aspect-ratio: 5 / 4; }
+.delivery__media img { width: 100%; height: 124%; max-width: none; object-fit: cover; object-position: 60% 50%; will-change: transform; }
+.delivery__copy { display: grid; gap: 28px; min-width: 0; }
+.delivery__copy h2 { font-size: clamp(2.6rem, 6vw, 5.2rem); }
+.delivery__copy > p { color: var(--mute); font-size: 1.1rem; max-width: 40ch; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.steps li::before { content: counter(step, decimal-leading-zero); color: var(--orange); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.03em; line-height: 1.1; }
+.steps strong { display: block; font-size: 1.15rem; letter-spacing: -0.01em; }
+.steps span { color: var(--mute); font-size: 0.97rem; }
+@media (max-width: 860px) { .delivery__grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Monte sua mensagem */
+.composer { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(28px, 4vw, 56px); align-items: start; }
+.form { display: grid; gap: 26px; min-width: 0; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 12px; min-width: 0; }
+legend, .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0; margin-bottom: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--ink); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background-color .15s ease, color .15s ease, transform .2s var(--ease); }
+.chip span:hover { background: var(--paper); }
+.chip span:active { transform: scale(.96); }
+.chip input:checked + span { background: var(--ink); color: var(--white); }
+.chip input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.field { display: grid; gap: 8px; }
+.field label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.field input, .field textarea { font: 400 1rem/1.4 var(--font); color: var(--ink); background: var(--white); border: 1.5px solid var(--ink); border-radius: 0; padding: 13px 14px; width: 100%; }
+.field textarea { min-height: 92px; resize: vertical; }
+.field input:focus, .field textarea:focus { outline: 3px solid var(--orange); outline-offset: 0; }
+.preview { background: var(--ink); color: var(--white); padding: clamp(22px, 3vw, 32px); display: grid; gap: 20px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--head) + 24px); min-width: 0; }
+.preview .label { margin: 0; color: var(--mute-dark); }
+.bubble { background: #1E1E1E; border-left: 4px solid var(--orange); padding: 16px 18px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.98rem; line-height: 1.5; min-height: 140px; }
+.bubble.pulse { animation: pulse .45s var(--ease); }
+@keyframes pulse { 0% { transform: scale(.985); border-left-color: var(--white); } 100% { transform: none; } }
+.preview__actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.copy-btn { background: none; border: 0; color: var(--white); font: 700 0.95rem var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 6px 0; }
+.copy-btn:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.preview small { color: var(--mute-dark); font-size: 0.85rem; }
+@media (max-width: 860px) { .composer { grid-template-columns: minmax(0, 1fr); } .preview { position: static; } }
+
+/* Final */
+.finale { position: relative; overflow: hidden; padding-block: clamp(72px, 10vw, 140px) 0; }
+.finale__crop { position: absolute; right: -6%; top: 8%; width: min(78vw, 980px); color: var(--white); pointer-events: none; }
+.finale__crop svg { width: 100%; height: auto; display: block; }
+.finale__inner { position: relative; display: grid; gap: 28px; }
+.echo { position: relative; font-size: clamp(3rem, 9vw, 7.4rem); letter-spacing: -0.05em; max-width: 9ch; }
+.echo__ghost { position: absolute; inset: 0; color: transparent; -webkit-text-stroke: 1.5px var(--ink); pointer-events: none; opacity: 0; }
+.echo__main { position: relative; display: block; }
+.finale__meta { display: flex; flex-wrap: wrap; gap: 10px 32px; font-weight: 700; font-size: 1.1rem; }
+.finale__meta a { text-decoration: none; }
+.finale__meta a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.finale__bar { position: relative; margin-top: clamp(64px, 9vw, 120px); border-top: 1.5px solid var(--ink); padding-block: 22px calc(22px + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; }
+.finale__bar .brand .logo { height: 20px; color: var(--ink); }
+@media (max-width: 700px) { .finale__crop { right: -30%; top: 22%; width: 120vw; } }
+
+/* Botão flutuante (celular) */
+.float {
+  position: fixed; z-index: 60;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--orange); color: var(--ink);
+  display: none; place-items: center;
+  box-shadow: 0 10px 30px rgba(16, 16, 16, .35);
+}
+.float::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--orange); animation: ping 2.4s var(--ease) infinite; }
+@keyframes ping { 0% { transform: scale(1); opacity: .8; } 80%, 100% { transform: scale(1.6); opacity: 0; } }
+.float svg { width: 28px; height: 28px; }
+.float:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 760px) { .float { display: grid; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add("js"); if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("reduced");</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="my" viewBox="-1 -7 504 222.8">
+      <path fill="currentColor" fill-rule="evenodd" d="M80 0.26C119.54 -2.22 149.71 13.11 170.5 46.26C167.52 36.64 162.69 27.98 156 20.26C190.58 -3.89 226.58 -6.05 264 13.76C285.19 26.96 298.35 45.8 303.5 70.26C304.17 117.26 304.17 164.26 303.5 211.26L301 213.76C285 214.43 269 214.43 253 213.76C251.83 212.59 250.67 211.43 249.5 210.26C249.17 166.93 248.83 123.59 248.5 80.26C240.4 59.96 225.56 51.79 204 55.76C191.98 60.44 184.15 68.94 180.5 81.26C180.49 125.01 179.82 168.68 178.5 212.26C177.75 212.89 176.92 213.39 176 213.76C160 214.43 144 214.43 128 213.76L125.5 211.26C125.47 167.22 124.81 123.22 123.5 79.26C114.64 58.25 99.14 50.75 77 56.76C65.74 61.77 58.57 70.27 55.5 82.26C55.17 125.26 54.83 168.26 54.5 211.26L52 213.76C35.24 214.73 18.58 214.4 2 212.76C1.37 212.01 0.87 211.18 0.5 210.26C-0.17 164.59 -0.17 118.93 0.5 73.26C5.3 46.81 19.13 26.65 42 12.76C54.08 6.41 66.75 2.25 80 0.26ZM288 0.26C303.34 0.09 318.67 0.26 334 0.76C337.06 1.82 339.56 3.65 341.5 6.26C344.58 12.75 347.91 19.08 351.5 25.26C353.41 28.06 354.41 31.06 354.5 34.26C340.34 41.34 326.34 48.67 312.5 56.26C303.83 39.59 295.17 22.93 286.5 6.26C285.75 3.92 286.25 1.92 288 0.26ZM453 0.26C468.67 0.09 484.34 0.26 500 0.76C501.83 2.23 502.33 4.06 501.5 6.26L396.5 210.26C394.92 211.8 393.09 212.97 391 213.76C374.99 214.59 358.99 214.43 343 213.26C342.07 211.99 341.91 210.66 342.5 209.26C348.38 198.17 353.71 186.83 358.5 175.26C361.12 163.26 360.12 151.6 355.5 140.26C347.64 126.21 340.64 111.88 334.5 97.26C348.34 89.67 362.34 82.34 376.5 75.26C382.08 86.09 387.91 96.75 394 107.26C412.01 73.91 429.51 40.24 446.5 6.26C448.56 4.03 450.73 2.03 453 0.26Z"/>
+    </symbol>
+    <symbol id="wa" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.180 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/>
+    </symbol>
+    <symbol id="arrow" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" d="M5 12h13M13 6l6 6-6 6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <span class="intro__line"></span>
+  <div class="intro__logo"><svg viewBox="-1 -7 504 222.8"><use href="#my"/></svg></div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="My Tech, início">
+      <svg class="logo" viewBox="-1 -7 504 222.8" aria-hidden="true"><use href="#my"/></svg>
+      <span>My Tech</span>
+    </a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#iphones">iPhones</a>
+      <a href="#assistencia">Assistência</a>
+      <a href="#parcelamento">24x</a>
+      <a href="#entrega">Entrega</a>
+      <a href="#pedido">Fale conosco</a>
+    </nav>
+    <a class="btn btn--orange" data-wa href="#pedido" target="_blank" rel="noopener">
+      <svg aria-hidden="true"><use href="#wa"/></svg><span>WhatsApp<span class="long"> da loja</span></span>
+    </a>
+  </div>
+  <span class="progress" id="progress" aria-hidden="true"></span>
+</header>
+
+<main id="inicio">
+
+  <section class="band--orange hero" aria-labelledby="hero-title">
+    <div class="hero__crop" aria-hidden="true"><svg viewBox="-1 -7 504 222.8"><use href="#my"/></svg></div>
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow hero__place" data-fade>iPhones em Recife - PE</p>
+        <h1 id="hero-title" data-split>Seu próximo iPhone.</h1>
+        <p class="hero__lead" data-fade>iPhones novos e seminovos, assistência técnica e parcelamento em até 24x. Você escolhe, a gente leva até você.</p>
+        <div class="hero__actions" data-fade>
+          <a class="btn btn--ink" data-wa href="#pedido" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#wa"/></svg>Chamar no WhatsApp
+          </a>
+          <a class="link-quiet" href="https://www.instagram.com/mytechpe/" target="_blank" rel="noopener">Ver o @mytechpe</a>
+        </div>
+      </div>
+      <figure class="hero__media">
+        <div class="hero__tilt" id="heroTilt">
+          <img src="assets/iphones.jpg" width="1536" height="1024" alt="Dois iPhones com a marca My Tech na tela, um com a frase Seu próximo iPhone e outro com o símbolo my em laranja">
+          <figcaption class="hero__tag">Novos e seminovos</figcaption>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__row" data-dir="-1"><span>iPhones novos</span><span>Seminovos</span><span>Assistência técnica</span><span>Até 24x</span><span>Levamos até você</span><span>Recife - PE</span></div>
+    <div class="marquee__row marquee__row--ghost" data-dir="1"><span>Seu próximo iPhone</span><span>@mytechpe</span><span>Seu próximo iPhone</span><span>@mytechpe</span></div>
+  </div>
+
+  <section class="hscroll" id="loja" aria-labelledby="loja-title">
+    <div class="wrap hscroll__intro">
+      <h2 id="loja-title" data-split>Tudo do seu iPhone em um lugar.</h2>
+      <p class="hscroll__hint" data-fade>Role para ver <svg aria-hidden="true"><use href="#arrow"/></svg></p>
+    </div>
+    <div class="hscroll__pin" id="hpin">
+      <div class="hscroll__track" id="htrack">
+        <article class="panel panel--ink">
+          <p class="eyebrow panel__label" style="color:var(--orange)">Loja</p>
+          <div class="panel__copy">
+            <h3>Novos e seminovos.</h3>
+            <p>Escolha o modelo, a cor e a memória. Peça fotos e detalhes de cada aparelho.</p>
+          </div>
+          <div class="panel__media"><img src="assets/iphones.jpg" width="1536" height="1024" loading="lazy" alt="iPhones com a marca My Tech"></div>
+        </article>
+        <article class="panel panel--orange">
+          <p class="eyebrow panel__label">Assistência técnica</p>
+          <div class="panel__copy">
+            <h3>Reparo e diagnóstico.</h3>
+            <p>Conte o que aconteceu com o seu iPhone e receba um orçamento.</p>
+          </div>
+          <ul class="panel__list"><li>Tela</li><li>Bateria</li><li>Câmeras</li><li>Conector de carga</li></ul>
+        </article>
+        <article class="panel panel--white">
+          <p class="eyebrow panel__label">Pagamento</p>
+          <div class="panel__copy">
+            <h3>Parcele em até 24x.</h3>
+            <p>O iPhone que você quer, em parcelas que cabem no seu mês.</p>
+          </div>
+          <p class="panel__big" aria-hidden="true">24<small>x</small></p>
+        </article>
+        <article class="panel panel--ink">
+          <p class="eyebrow panel__label" style="color:var(--orange)">Entrega</p>
+          <div class="panel__copy">
+            <h3>Levamos até você.</h3>
+            <p>Entregamos no endereço que você escolher, em Recife.</p>
+          </div>
+          <div class="panel__media"><img src="assets/embalagem.jpg" width="1536" height="1024" loading="lazy" alt="Sacola laranja e caixa preta da My Tech"></div>
+        </article>
+        <article class="panel panel--orange">
+          <p class="eyebrow panel__label">My Tech · Recife - PE</p>
+          <div class="panel__copy">
+            <h3>Seu próximo iPhone.</h3>
+            <a class="btn btn--ink" data-wa href="#pedido" target="_blank" rel="noopener" style="justify-self:start"><svg aria-hidden="true"><use href="#wa"/></svg>Chamar no WhatsApp</a>
+          </div>
+          <div class="panel__logo" aria-hidden="true"><svg viewBox="-1 -7 504 222.8"><use href="#my"/></svg></div>
+        </article>
+      </div>
+      <div class="hscroll__bar" aria-hidden="true"><i id="hbar"></i></div>
+    </div>
+  </section>
+
+  <section id="iphones" class="band band--white" aria-labelledby="iphones-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow" data-fade>iPhones</p>
+        <h2 id="iphones-title" data-split>Novos e seminovos.</h2>
+        <p data-fade>Do lançamento ao modelo que cabe no seu orçamento. Conte o que você procura e a gente mostra as opções disponíveis.</p>
+      </div>
+      <div class="tiles" id="tiles">
+        <article class="tile tile--ink">
+          <svg class="logo" viewBox="-1 -7 504 222.8" aria-hidden="true"><use href="#my"/></svg>
+          <div>
+            <h3>Novos</h3>
+            <p>Para quem quer estrear o aparelho. Pergunte pelos modelos, cores e capacidades em estoque.</p>
+          </div>
+        </article>
+        <article class="tile tile--orange">
+          <svg class="logo" viewBox="-1 -7 504 222.8" aria-hidden="true"><use href="#my"/></svg>
+          <div>
+            <h3>Seminovos</h3>
+            <p>O iPhone que você quer por um valor mais acessível. Peça fotos e detalhes de cada aparelho.</p>
+          </div>
+        </article>
+        <a class="tile tile--line" href="#pedido">
+          <h3>Qual iPhone combina com você?</h3>
+          <div class="tile__foot">
+            <span>Monte sua mensagem</span>
+            <span class="arrow" aria-hidden="true"><svg><use href="#arrow"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="assistencia" class="band band--ink" aria-labelledby="assist-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow" style="color:var(--orange)" data-fade>Assistência técnica</p>
+        <h2 id="assist-title" data-split>Seu iPhone de volta ao normal.</h2>
+      </div>
+      <p class="reading" id="reading">Tela quebrada, bateria fraca, câmera ou carregamento com problema? Conte o que aconteceu e receba um orçamento.</p>
+      <ul class="services" id="services">
+        <li><strong>Troca de tela</strong><span>Display e vidro</span></li>
+        <li><strong>Bateria</strong><span>Duração e saúde da bateria</span></li>
+        <li><strong>Câmeras</strong><span>Traseira e frontal</span></li>
+        <li><strong>Conector de carga</strong><span>Não carrega ou mau contato</span></li>
+        <li><strong>Tampa traseira</strong><span>Vidro traseiro trincado</span></li>
+        <li><strong>Diagnóstico</strong><span>Quando você não sabe o defeito</span></li>
+      </ul>
+      <div class="after-list" data-fade>
+        <a class="btn btn--orange" data-wa data-topic="assistencia" href="#pedido" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#wa"/></svg>Pedir orçamento
+        </a>
+        <p>Atendimento pelo WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="parcelamento" class="band--orange installments" aria-labelledby="parc-title">
+    <div class="installments__stage" id="parcStage">
+      <div class="wrap installments__grid">
+        <div class="counter">
+          <div class="ring" id="ring" aria-hidden="true">
+            <svg viewBox="0 0 400 400">
+              <defs><path id="circle" d="M200,200 m-180,0 a180,180 0 1,1 360,0 a180,180 0 1,1 -360,0"/></defs>
+              <text><textPath href="#circle">Parcele em até 24x · Seu próximo iPhone · My Tech Recife · Parcele em até 24x · Seu próximo iPhone ·</textPath></text>
+            </svg>
+          </div>
+          <p class="big24" aria-hidden="true"><span id="count">24</span><small>x</small></p>
+        </div>
+        <div class="installments__copy">
+          <h2 id="parc-title" data-split>Parcele em até 24x.</h2>
+          <p data-fade>Leve o iPhone agora e pague em parcelas que cabem no seu mês. Também aceitamos Pix e pagamento à vista.</p>
+          <a class="btn btn--ink" data-wa href="#pedido" target="_blank" rel="noopener" style="justify-self:start" data-fade>
+            <svg aria-hidden="true"><use href="#wa"/></svg>Simular parcelas
+          </a>
+          <p class="note" data-fade>Consulte as condições de parcelamento pelo WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="entrega" class="band band--paper" aria-labelledby="entrega-title">
+    <div class="wrap delivery__grid">
+      <div class="delivery__media" id="delivMedia">
+        <img src="assets/embalagem.jpg" width="1536" height="1024" loading="lazy" alt="Sacola laranja e caixa preta com o símbolo my e cartão My Tech">
+      </div>
+      <div class="delivery__copy">
+        <p class="eyebrow" data-fade>Entrega em Recife - PE</p>
+        <h2 id="entrega-title" data-split>Levamos até você.</h2>
+        <p data-fade>Você não precisa sair de casa para trocar de iPhone. A gente combina o melhor horário e entrega no seu endereço.</p>
+        <ol class="steps" id="steps">
+          <li><div><strong>Chame no WhatsApp</strong><span>Diga o modelo que procura ou o problema do seu aparelho.</span></div></li>
+          <li><div><strong>Escolha e combine</strong><span>Veja as opções, a forma de pagamento e o parcelamento.</span></div></li>
+          <li><div><strong>Receba onde estiver</strong><span>Levamos o seu iPhone até você, em Recife.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="pedido" class="band band--white" aria-labelledby="pedido-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow" data-fade>Fale com a My Tech</p>
+        <h2 id="pedido-title" data-split>Monte sua mensagem.</h2>
+        <p data-fade>Marque o que você precisa e envie direto para o nosso WhatsApp. Assim a gente já responde com as opções certas.</p>
+      </div>
+      <div class="composer">
+        <form class="form" id="composer" novalidate>
+          <fieldset>
+            <legend>Você quer</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="topic" id="topic-compra" value="compra" checked><span>Comprar um iPhone</span></label>
+              <label class="chip"><input type="radio" name="topic" id="topic-assistencia" value="assistencia"><span>Assistência técnica</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset data-only="compra">
+            <legend>Condição</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="cond" id="cond-novo" value="Novo" checked><span>Novo</span></label>
+              <label class="chip"><input type="radio" name="cond" id="cond-semi" value="Seminovo"><span>Seminovo</span></label>
+              <label class="chip"><input type="radio" name="cond" id="cond-tanto" value="Tanto faz"><span>Tanto faz</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field" data-only="compra">
+            <label for="modelo">Modelo, cor e memória</label>
+            <input id="modelo" name="modelo" type="text" placeholder="Ex.: iPhone 15 Pro, 256 GB, titânio natural" autocomplete="off">
+          </div>
+
+          <fieldset data-only="compra">
+            <legend>Pagamento</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="pag" id="pag-parc" value="Parcelado (até 24x)" checked><span>Parcelado até 24x</span></label>
+              <label class="chip"><input type="radio" name="pag" id="pag-pix" value="Pix / à vista"><span>Pix / à vista</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field" data-only="assistencia" hidden>
+            <label for="aparelho">Seu iPhone</label>
+            <input id="aparelho" name="aparelho" type="text" placeholder="Ex.: iPhone 13" autocomplete="off">
+          </div>
+
+          <div class="field" data-only="assistencia" hidden>
+            <label for="problema">O que aconteceu?</label>
+            <textarea id="problema" name="problema" placeholder="Ex.: a tela trincou e o touch falha no canto"></textarea>
+          </div>
+
+          <fieldset>
+            <legend>Entrega</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="ent" id="ent-levar" value="Quero que levem até mim" checked><span>Levem até mim</span></label>
+              <label class="chip"><input type="radio" name="ent" id="ent-combinar" value="Prefiro combinar"><span>Prefiro combinar</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="nome">Seu nome</label>
+            <input id="nome" name="nome" type="text" placeholder="Como podemos te chamar?" autocomplete="given-name">
+          </div>
+        </form>
+
+        <aside class="preview" aria-labelledby="preview-label">
+          <p class="label" id="preview-label">Sua mensagem</p>
+          <div class="bubble" id="bubble" aria-live="polite"></div>
+          <div class="preview__actions">
+            <a class="btn btn--orange" id="send" data-wa href="#pedido" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#wa"/></svg>Enviar no WhatsApp
+            </a>
+            <button class="copy-btn" type="button" id="copy">Copiar texto</button>
+          </div>
+          <small id="copy-status" aria-live="polite">Abre o WhatsApp com a mensagem pronta.</small>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer class="band--orange finale" id="finale" aria-labelledby="finale-title">
+    <div class="finale__crop" id="finaleCrop" aria-hidden="true"><svg viewBox="-1 -7 504 222.8"><use href="#my"/></svg></div>
+    <div class="wrap finale__inner">
+      <p class="eyebrow" data-fade>My Tech · Recife - PE</p>
+      <h2 class="echo" id="finale-title">
+        <span class="echo__ghost" aria-hidden="true">Seu próximo iPhone.</span>
+        <span class="echo__ghost" aria-hidden="true">Seu próximo iPhone.</span>
+        <span class="echo__main" data-split>Seu próximo iPhone.</span>
+      </h2>
+      <div class="hero__actions" data-fade>
+        <a class="btn btn--ink" data-wa href="#pedido" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#wa"/></svg>Chamar no WhatsApp
+        </a>
+      </div>
+      <div class="finale__meta" data-fade>
+        <a href="https://www.instagram.com/mytechpe/" target="_blank" rel="noopener">@mytechpe</a>
+        <a data-wa href="#pedido" target="_blank" rel="noopener" id="wa-number">WhatsApp (81) 9 9258-0140</a>
+        <span>Recife - PE</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="finale__bar">
+        <span class="brand"><svg class="logo" viewBox="-1 -7 504 222.8" aria-hidden="true"><use href="#my"/></svg> My Tech</span>
+        <span>iPhones novos e seminovos · Assistência técnica · Até 24x · Entrega em Recife</span>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<a class="float" data-wa href="#pedido" target="_blank" rel="noopener" aria-label="Chamar a My Tech no WhatsApp">
+  <svg aria-hidden="true"><use href="#wa"/></svg>
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+  /* ---------- WhatsApp ---------- */
+  const WHATSAPP = "5581992580140"; // (81) 9 9258-0140
+  const waLink = (text) => "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
+  const pretty = WHATSAPP.replace(/^55(\d{2})(\d)(\d{4})(\d{4})$/, "($1) $2 $3-$4");
+
+  const form = document.getElementById("composer");
+  const bubble = document.getElementById("bubble");
+  const send = document.getElementById("send");
+  const val = (name) => (form.elements[name] && form.elements[name].value || "").trim();
+
+  function message() {
+    const topic = val("topic");
+    const nome = val("nome");
+    const lines = [nome ? `Olá, My Tech! Aqui é ${nome}.` : "Olá, My Tech!"];
+    if (topic === "assistencia") {
+      lines.push("Preciso de assistência técnica.");
+      lines.push(`Aparelho: ${val("aparelho") || "a informar"}`);
+      lines.push(`Problema: ${val("problema") || "a informar"}`);
+    } else {
+      lines.push("Quero comprar um iPhone.");
+      lines.push(`Condição: ${val("cond")}`);
+      lines.push(`Modelo: ${val("modelo") || "quero ver as opções"}`);
+      lines.push(`Pagamento: ${val("pag")}`);
+    }
+    lines.push(`Entrega: ${val("ent")}`);
+    return lines.join("\n");
+  }
+  function render(e) {
+    const topic = val("topic");
+    form.querySelectorAll("[data-only]").forEach((el) => { el.hidden = el.dataset.only !== topic; });
+    bubble.textContent = message();
+    send.href = waLink(bubble.textContent);
+    if (e && e.type === "change") { bubble.classList.remove("pulse"); void bubble.offsetWidth; bubble.classList.add("pulse"); }
+  }
+  const general = {
+    "": "Olá, My Tech! Vim pelo site e quero saber mais sobre os iPhones.",
+    assistencia: "Olá, My Tech! Vim pelo site e preciso de um orçamento de assistência técnica."
+  };
+  document.querySelectorAll("[data-wa]").forEach((a) => { if (a.id !== "send") a.href = waLink(general[a.dataset.topic || ""]); });
+  document.getElementById("wa-number").textContent = "WhatsApp " + pretty;
+  form.addEventListener("input", render);
+  form.addEventListener("change", render);
+  form.addEventListener("submit", (e) => e.preventDefault());
+  render();
+
+  const status = document.getElementById("copy-status");
+  document.getElementById("copy").addEventListener("click", () => {
+    const text = bubble.textContent;
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(bubble);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      status.textContent = "Texto selecionado. Use Copiar do seu aparelho.";
+    };
+    try { navigator.clipboard.writeText(text).then(() => { status.textContent = "Texto copiado."; }, fallback); } catch (e) { fallback(); }
+  });
+
+  /* ---------- Movimento ---------- */
+  (function motion() {
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const intro = document.getElementById("intro");
+    if (reduced || !window.gsap || !window.ScrollTrigger) { if (intro) intro.remove(); return; }
+    gsap.registerPlugin(ScrollTrigger);
+    const HEAD = 68;
+
+    // Rolagem suave
+    let lenis = null;
+    if (window.Lenis) {
+      lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((t) => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const target = document.querySelector(a.getAttribute("href"));
+        if (!target || !lenis) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -HEAD });
+      });
+    });
+
+    // Divide títulos em palavras com máscara
+    document.querySelectorAll("[data-split]").forEach((el) => {
+      const text = el.textContent.trim();
+      el.setAttribute("aria-label", text);
+      el.innerHTML = text.split(/\s+/).map((w) => `<span class="w" aria-hidden="true"><span class="wi">${w}</span></span>`).join(" ");
+    });
+
+    // Barra de progresso
+    gsap.to("#progress", { scaleX: 1, ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 0.3 } });
+
+    // Abertura: linha → símbolo → cortina sobe
+    const heroWords = document.querySelectorAll("#hero-title .wi");
+    const heroFades = document.querySelectorAll(".hero [data-fade]");
+    gsap.set(heroWords, { yPercent: 110 });
+    gsap.set(heroFades, { y: 24, opacity: 0 });
+    gsap.set("#heroTilt", { opacity: 0, y: 80 });
+    if (lenis) lenis.stop();
+    const tl = gsap.timeline({ defaults: { ease: "expo.out" }, onComplete: () => { intro.remove(); if (lenis) lenis.start(); } });
+    tl.to(".intro__line", { scaleX: 1, duration: 0.6, ease: "expo.inOut" })
+      .to(".intro__logo", { clipPath: "inset(0% 0 0 0)", duration: 0.7 }, "-=0.1")
+      .to(".intro__line", { scaleX: 0, transformOrigin: "right center", duration: 0.5, ease: "expo.inOut" }, "<")
+      .to(intro, { yPercent: -100, duration: 0.8, ease: "expo.inOut" }, "+=0.15")
+      .to(heroWords, { yPercent: 0, duration: 1.1, stagger: 0.08 }, "-=0.35")
+      .to("#heroTilt", { opacity: 1, y: 0, duration: 1.2 }, "<0.1")
+      .to(heroFades, { y: 0, opacity: 1, duration: 0.9, stagger: 0.08 }, "<0.15");
+
+    // Hero: mockup inclinado em 3D que se endireita + símbolo em paralaxe
+    gsap.fromTo("#heroTilt", { rotateX: 16, rotateY: -14, rotateZ: 2, scale: 0.92 },
+      { rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1.04, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 } });
+    gsap.to(".hero__crop", { yPercent: -35, xPercent: -6, rotate: -4, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+    gsap.to(".hero__copy", { yPercent: 18, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+
+    // Faixas: andam sozinhas e aceleram / invertem com a rolagem
+    document.querySelectorAll(".marquee__row").forEach((row) => {
+      row.innerHTML += row.innerHTML;
+      const dir = +row.dataset.dir;
+      const loop = gsap.fromTo(row, { xPercent: dir < 0 ? 0 : -50 }, { xPercent: dir < 0 ? -50 : 0, ease: "none", duration: 28, repeat: -1 });
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          const boost = Math.min(6, 1 + Math.abs(self.getVelocity()) / 400);
+          gsap.to(loop, { timeScale: self.direction * boost, duration: 0.25, overwrite: true });
+          gsap.to(loop, { timeScale: self.direction, duration: 1.2, delay: 0.25 });
+        }
+      });
+    });
+
+    // Títulos e textos entrando com a rolagem
+    document.querySelectorAll("[data-split]").forEach((el) => {
+      if (el.id === "hero-title") return;
+      gsap.from(el.querySelectorAll(".wi"), { yPercent: 110, duration: 1, ease: "expo.out", stagger: 0.07,
+        scrollTrigger: { trigger: el, start: "top 88%" } });
+    });
+    document.querySelectorAll("[data-fade]").forEach((el) => {
+      if (el.closest(".hero")) return;
+      gsap.from(el, { y: 28, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 92%" } });
+    });
+
+    // Percurso horizontal fixado
+    const mm = gsap.matchMedia();
+    const pin = document.getElementById("hpin");
+    const track = document.getElementById("htrack");
+    pin.parentElement.classList.add("is-pinned");
+    const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+    const hTween = gsap.to(track, {
+      x: () => -distance(), ease: "none",
+      scrollTrigger: {
+        trigger: pin, start: () => "top " + HEAD + "px", end: () => "+=" + distance(),
+        pin: true, scrub: 0.8, invalidateOnRefresh: true, anticipatePin: 1,
+        onUpdate: (self) => gsap.set("#hbar", { scaleX: self.progress })
+      }
+    });
+    track.querySelectorAll(".panel").forEach((panel) => {
+      const img = panel.querySelector(".panel__media img");
+      if (img) gsap.fromTo(img, { xPercent: -16 }, { xPercent: 0, ease: "none",
+        scrollTrigger: { trigger: panel, containerAnimation: hTween, start: "left right", end: "right left", scrub: true } });
+      gsap.from(panel.querySelectorAll("h3, .panel__copy p, .panel__list li, .panel__big"), {
+        y: 50, opacity: 0, stagger: 0.06, duration: 0.8, ease: "expo.out",
+        scrollTrigger: { trigger: panel, containerAnimation: hTween, start: "left 80%" } });
+      const logo = panel.querySelector(".panel__logo");
+      if (logo) gsap.from(logo, { rotate: -12, scale: 0.6, ease: "none",
+        scrollTrigger: { trigger: panel, containerAnimation: hTween, start: "left right", end: "center center", scrub: true } });
+    });
+
+    // Quadros de iPhone abrindo em leque
+    mm.add("(min-width: 901px)", () => {
+      gsap.fromTo("#tiles .tile",
+        { xPercent: (i) => (1 - i) * 105, rotate: (i) => (i - 1) * 7, yPercent: (i) => Math.abs(i - 1) * 8 },
+        { xPercent: 0, rotate: 0, yPercent: 0, ease: "power2.out",
+          scrollTrigger: { trigger: "#tiles", start: "top 92%", end: "top 35%", scrub: 0.8 } });
+    });
+    mm.add("(max-width: 900px)", () => {
+      gsap.utils.toArray("#tiles .tile").forEach((t) => gsap.from(t, { y: 60, rotate: 3, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: t, start: "top 90%" } }));
+    });
+
+    // Assistência: leitura que acende palavra por palavra
+    const reading = document.getElementById("reading");
+    reading.innerHTML = reading.textContent.trim().split(/\s+/).map((w) => `<span class="rw">${w}</span>`).join(" ");
+    gsap.fromTo("#reading .rw", { opacity: 0.16 }, { opacity: 1, stagger: 0.1, ease: "none",
+      scrollTrigger: { trigger: reading, start: "top 80%", end: "bottom 45%", scrub: true } });
+    gsap.from("#services li", { y: 30, opacity: 0, duration: 0.8, ease: "expo.out", stagger: 0.07,
+      scrollTrigger: { trigger: "#services", start: "top 85%" } });
+
+    // 24x: fixa a cena, conta de 1 a 24 e gira o anel
+    const count = document.getElementById("count");
+    const counter = { n: 1 };
+    const parc = gsap.timeline({
+      scrollTrigger: { trigger: "#parcStage", start: () => "top " + HEAD + "px", end: "+=110%", pin: true, scrub: 0.6 }
+    });
+    parc.fromTo(counter, { n: 1 }, { n: 24, ease: "power1.inOut", duration: 1, onUpdate: () => { count.textContent = Math.round(counter.n); } })
+        .fromTo(".big24", { scale: 0.7 }, { scale: 1, ease: "power2.out", duration: 1 }, 0)
+        .fromTo("#ring", { rotate: -120, scale: 0.85, opacity: 0 }, { rotate: 120, scale: 1, opacity: 1, ease: "none", duration: 1 }, 0);
+
+    // Entrega: imagem se revela pelo corte e anda em paralaxe
+    gsap.fromTo("#delivMedia", { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 100%)" },
+      { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 22% 100%, 0% 56%)", duration: 1.4, ease: "expo.inOut",
+        scrollTrigger: { trigger: "#delivMedia", start: "top 80%" } });
+    gsap.fromTo("#delivMedia img", { yPercent: -18 }, { yPercent: 0, ease: "none",
+      scrollTrigger: { trigger: "#delivMedia", start: "top bottom", end: "bottom top", scrub: true } });
+    gsap.from("#steps li", { x: -40, opacity: 0, duration: 0.8, ease: "expo.out", stagger: 0.12,
+      scrollTrigger: { trigger: "#steps", start: "top 85%" } });
+
+    // Final: símbolo sobe em paralaxe, título ganha camadas de eco
+    gsap.fromTo("#finaleCrop", { yPercent: 40, rotate: 6 }, { yPercent: -10, rotate: 0, ease: "none",
+      scrollTrigger: { trigger: "#finale", start: "top bottom", end: "bottom bottom", scrub: true } });
+    gsap.fromTo(".echo__ghost", { y: 0, opacity: 0 }, { y: (i) => -(i + 1) * 0.16 + "em", opacity: (i) => 0.55 - i * 0.25, ease: "none",
+      scrollTrigger: { trigger: ".echo", start: "top 85%", end: "top 35%", scrub: true } });
+
+    // Botões magnéticos (desktop)
+    mm.add("(hover: hover) and (min-width: 901px)", () => {
+      document.querySelectorAll(".btn").forEach((b) => {
+        const xTo = gsap.quickTo(b, "x", { duration: 0.4, ease: "power3" });
+        const yTo = gsap.quickTo(b, "y", { duration: 0.4, ease: "power3" });
+        b.addEventListener("mousemove", (e) => { const r = b.getBoundingClientRect(); xTo((e.clientX - r.left - r.width / 2) * 0.18); yTo((e.clientY - r.top - r.height / 2) * 0.3); });
+        b.addEventListener("mouseleave", () => { xTo(0); yTo(0); });
+      });
+    });
+
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+  })();
+</script>
+</body>
+</html>
